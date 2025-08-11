@@ -1,0 +1,16 @@
+-- LocalScript (coloque em StarterPlayerScripts para teste)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+wait(3) -- Espera o jogo carregar antes de alterar
+
+-- Tentativa de "trapacear" mudando o tamanho
+for _, scale in ipairs(humanoid:GetChildren()) do
+    if scale:IsA("NumberValue") and scale.Name:find("Scale") then
+        scale.Value = scale.Value * 2 -- dobra o tamanho
+    end
+end
+
+-- Outra forma: alterar HipHeight diretamente
+humanoid.HipHeight = humanoid.HipHeight + 5
