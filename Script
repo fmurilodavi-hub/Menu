@@ -1,0 +1,73 @@
+-- Script: Menu para alterar tamanho do personagem
+-- LocalScript (para teste anti-cheat)
+
+-- Cria a interface
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 250, 0, 150)
+frame.Position = UDim2.new(0.5, -125, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.Parent = gui
+
+-- Título
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "Alterar Tamanho"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 20
+title.Parent = frame
+
+-- Caixa de entrada
+local input = Instance.new("TextBox")
+input.Size = UDim2.new(1, -20, 0, 40)
+input.Position = UDim2.new(0, 10, 0, 40)
+input.PlaceholderText = "Digite o tamanho (ex: 2)"
+input.Text = ""
+input.ClearTextOnFocus = false
+input.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+input.TextColor3 = Color3.fromRGB(255, 255, 255)
+input.Font = Enum.Font.SourceSans
+input.TextSize = 18
+input.Parent = frame
+
+-- Botão de aplicar
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(1, -20, 0, 40)
+button.Position = UDim2.new(0, 10, 0, 90)
+button.Text = "Aplicar"
+button.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.Font = Enum.Font.SourceSansBold
+button.TextSize = 18
+button.Parent = frame
+
+-- Função para alterar tamanho
+local function alterarTamanho(valor)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        for _, scale in ipairs(humanoid:GetChildren()) do
+            if scale:IsA("NumberValue") and scale.Name:find("Scale") then
+                scale.Value = valor
+            end
+        end
+        humanoid.HipHeight = valor * 2 -- Ajusta altura do quadril
+    end
+end
+
+-- Evento do botão
+button.MouseButton1Click:Connect(function()
+    local num = tonumber(input.Text)
+    if num and num > 0 then
+        alterarTamanho(num)
+    else
+        warn("Digite um número válido!")
+    end
+end)
